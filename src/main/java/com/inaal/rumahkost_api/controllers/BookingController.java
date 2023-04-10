@@ -4,6 +4,7 @@ import com.inaal.rumahkost_api.models.dto.BookingDTO;
 import com.inaal.rumahkost_api.models.entity.Booking;
 import com.inaal.rumahkost_api.models.response.SuccessResponse;
 import com.inaal.rumahkost_api.services.BookingService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity addBooking(@RequestBody BookingDTO bookingDTO) {
+    public ResponseEntity addBooking(@Valid @RequestBody BookingDTO bookingDTO) {
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Booking booking = modelMapper.map(bookingDTO, Booking.class);
         bookingService.save(booking);
@@ -46,7 +47,7 @@ public class BookingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateBooking(@PathVariable Long id, @RequestBody BookingDTO bookingDTO) throws Exception {
+    public ResponseEntity updateBooking(@PathVariable Long id, @Valid @RequestBody BookingDTO bookingDTO) throws Exception {
         Booking booking = modelMapper.map(bookingDTO, Booking.class);
         booking.setId(id);
         bookingService.update(booking);

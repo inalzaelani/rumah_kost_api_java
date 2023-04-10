@@ -4,6 +4,7 @@ import com.inaal.rumahkost_api.models.dto.UserDTO;
 import com.inaal.rumahkost_api.models.entity.User;
 import com.inaal.rumahkost_api.models.response.SuccessResponse;
 import com.inaal.rumahkost_api.services.IServices;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,14 +42,14 @@ public class UserController {
                 .body(new SuccessResponse("Success get user with id " + id, user));
     }
     @PostMapping
-    public ResponseEntity createUser(@RequestBody UserDTO userDTO) throws Exception {
+    public ResponseEntity createUser(@Valid @RequestBody UserDTO userDTO) throws Exception {
         User user = modelMapper.map(userDTO, User.class);
         userService.saveService(user);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new SuccessResponse("Success create user", user));
     }
-    public ResponseEntity updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id) throws Exception {
+    public ResponseEntity updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id) throws Exception {
         User user = modelMapper.map(userDTO, User.class);
         user.setId(id);
         userService.updateService(user);

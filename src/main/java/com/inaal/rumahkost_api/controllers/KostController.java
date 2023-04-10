@@ -4,6 +4,7 @@ import com.inaal.rumahkost_api.models.dto.KostDTO;
 import com.inaal.rumahkost_api.models.entity.Kost;
 import com.inaal.rumahkost_api.models.response.SuccessResponse;
 import com.inaal.rumahkost_api.services.IServices;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,7 +43,7 @@ public class KostController {
                 .body(new SuccessResponse("Success get kost with id " + id, kost));
     }
     @PostMapping
-    public ResponseEntity createKost(@RequestBody KostDTO kostDTO) throws Exception {
+    public ResponseEntity createKost(@Valid  @RequestBody KostDTO kostDTO) throws Exception {
         Kost kost = modelMapper.map(kostDTO, Kost.class);
         kostService.saveService(kost);
         return ResponseEntity
@@ -51,7 +52,7 @@ public class KostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateKost(@RequestBody KostDTO kostDTO, @PathVariable Long id) throws Exception {
+    public ResponseEntity updateKost(@Valid @RequestBody KostDTO kostDTO, @PathVariable Long id) throws Exception {
         Kost kost = modelMapper.map(kostDTO, Kost.class);
         kost.setId(id);
         kostService.updateService(kost);
