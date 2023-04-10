@@ -16,7 +16,6 @@ public class Kost implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "name", nullable = false)
-    @NotBlank()
     private String name;
     @Column(name = "address")
     private String address;
@@ -24,10 +23,10 @@ public class Kost implements Serializable {
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "capasity")
-    private Integer capasity;
+    @Column(name = "capacity")
+    private Integer capacity;
 
-    @OneToMany(mappedBy = "kost")
+    @OneToMany(mappedBy = "kost", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Booking> bookings;
 
@@ -63,12 +62,12 @@ public class Kost implements Serializable {
         this.price = price;
     }
 
-    public Integer getCapasity() {
-        return capasity;
+    public Integer getCapacity() {
+        return capacity;
     }
 
-    public void setCapasity(Integer capasity) {
-        this.capasity = capasity;
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 
     public List<Booking> getBookings() {
@@ -77,5 +76,12 @@ public class Kost implements Serializable {
 
     public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
+    }
+
+    @PreRemove
+    private void removeKostFromBookings() {
+        for (Booking booking : bookings) {
+            booking.setKost(null);
+        }
     }
 }

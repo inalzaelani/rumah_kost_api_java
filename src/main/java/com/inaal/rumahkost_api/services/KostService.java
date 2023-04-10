@@ -31,13 +31,13 @@ public class KostService implements IServices<Kost>{
 
     @Override
     public Kost getByIdService(Long id) throws Exception {
-        try{
-            Kost kost = kostRepository.findById(id);
-            if (kost == null){
+        try {
+            try {
+              return kostRepository.findById(id);
+            } catch (Exception e) {
                 throw new NotFoundException("KOST NOT FOUND");
             }
-            return kost;
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -54,12 +54,12 @@ public class KostService implements IServices<Kost>{
     @Override
     public void deleteService(Kost kost) throws Exception {
         try {
-            Kost find = kostRepository.findById(kost.getId());
-            if(find==null){
-                throw new NotFoundException("KOST NOT FOUND");
-            }else {
-                kostRepository.delete(kost);
-            }
+                try {
+                   Kost find = kostRepository.findById(kost.getId());
+                    kostRepository.delete(find);
+                } catch (Exception e) {
+                    throw new NotFoundException("KOST NOT FOUND");
+                }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -68,12 +68,13 @@ public class KostService implements IServices<Kost>{
     @Override
     public void updateService(Kost kost) throws Exception {
       try {
-            Kost find = kostRepository.findById(kost.getId());
-            if(find==null){
+          try {
+              Kost find  = kostRepository.findById(kost.getId());
+              kostRepository.update(find);
+            } catch (Exception e) {
                 throw new NotFoundException("KOST NOT FOUND");
-            }else {
-                kostRepository.update(kost);
-            }
+          }
+
         } catch (Exception e){
             throw new RuntimeException(e);
       }

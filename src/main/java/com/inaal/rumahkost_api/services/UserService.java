@@ -32,11 +32,12 @@ public class UserService implements IServices<User> {
     @Override
     public User getByIdService(Long id) throws Exception {
         try{
-            User user = userRepository.findById(id);
-            if (user == null){
-                throw new NotFoundException("USER NOT FOUND");
+            try {
+                User user = userRepository.findById(id);
+                return user;
+            } catch (Exception e){
+                throw new RuntimeException(e);
             }
-            return user;
         }catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -54,11 +55,12 @@ public class UserService implements IServices<User> {
     @Override
     public void deleteService(User user) throws Exception {
         try {
-            User find = userRepository.findById(user.getId());
-            if(find==null){
-                throw new NotFoundException("USER NOT FOUND");
-            }
-            userRepository.delete(user);
+           try {
+             User find =  userRepository.findById(user.getId());
+             userRepository.delete(find);
+           }catch (Exception e){
+               throw new NotFoundException("USER NOT FOUND");
+           }
         } catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -67,11 +69,12 @@ public class UserService implements IServices<User> {
     @Override
     public void updateService(User user) throws Exception {
        try {
-              User find = userRepository.findById(user.getId());
-              if(find==null){
-                throw new NotFoundException("USER NOT FOUND");
+              try {
+                  User find = userRepository.findById(user.getId());
+                  userRepository.update(find);
+              } catch (Exception e){
+                  throw new NotFoundException("USER NOT FOUND");
               }
-              userRepository.update(user);
          } catch (Exception e){
               throw new RuntimeException(e);
        }

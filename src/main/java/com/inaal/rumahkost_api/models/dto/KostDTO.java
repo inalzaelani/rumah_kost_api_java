@@ -1,7 +1,6 @@
 package com.inaal.rumahkost_api.models.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -11,12 +10,13 @@ public class KostDTO {
     private String name;
     @NotBlank(message = "{invalid.address}")
     private String address;
-    @NotBlank(message = "{invalid.price}")
-    @Pattern(regexp="(^$|[0-9]{10})", message = "{invalid.format.price}")
+    @NotNull(message = "{invalid.price}")
+    @DecimalMin(value = "0.0", message = "{invalid.format.price}")
     private BigDecimal price;
-    @NotBlank(message = "{invalid.capacity}")
-    @Pattern(regexp="(^$|[0-9]{10})", message = "{invalid.format.capacity}")
-    private Integer capasity;
+
+    @NotNull(message = "{invalid.capacity}")
+    @Min(value = 1, message = "{invalid.format.capacity}")
+    private Integer capacity;
 
     public String getName() {
         return name;
@@ -42,11 +42,11 @@ public class KostDTO {
         this.price = price;
     }
 
-    public Integer getCapasity() {
-        return capasity;
+    public Integer getCapacity() {
+        return capacity;
     }
 
-    public void setCapasity(Integer capasity) {
-        this.capasity = capasity;
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 }

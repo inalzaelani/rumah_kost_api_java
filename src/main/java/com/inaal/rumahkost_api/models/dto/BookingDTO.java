@@ -12,13 +12,13 @@ import java.util.Date;
 
 public class BookingDTO {
 
-    @NotBlank(message = "{invalid.kost.id}")
+    @NotNull(message = "{invalid.kost.id}")
     private Long kostId;
 
-    @NotBlank(message = "{invalid.user.id}")
+    @NotNull(message = "{invalid.user.id}")
     private Long userId;
     @NotBlank(message = "{invalid.room.number}")
-    @Pattern(regexp="(^$|[0-9]{10})", message = "{invalid.format.room.number}")
+    @Pattern(regexp="^[0-9]+$", message = "{invalid.format.room.number}")
     private String roomNumber;
 
     @Temporal(TemporalType.DATE)

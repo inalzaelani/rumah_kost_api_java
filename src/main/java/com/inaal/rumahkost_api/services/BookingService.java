@@ -1,5 +1,6 @@
 package com.inaal.rumahkost_api.services;
 
+import com.inaal.rumahkost_api.exception.AlreadyExistException;
 import com.inaal.rumahkost_api.exception.NotFoundException;
 import com.inaal.rumahkost_api.models.entity.Booking;
 import com.inaal.rumahkost_api.repositories.IBookingRepository;
@@ -35,11 +36,13 @@ public class BookingService implements IBookingService<Booking> {
     @Override
     public Booking findById(Long id) throws Exception {
         try {
-            Booking bookings = bookingRepository.findById(id);
-            if (bookings == null) {
+            try {
+                Booking bookings = bookingRepository.findById(id);
+                return bookings;
+            } catch (Exception e) {
                 throw new NotFoundException("BOOKING NOT FOUND");
             }
-            return bookings;
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -51,7 +54,7 @@ public class BookingService implements IBookingService<Booking> {
           try {
               Booking find = bookingRepository.findByRoomNumber(booking);
               if (find != null){
-                  throw new NotFoundException("ROOM NUMBER ALREADY BOOKED");
+                  throw new AlreadyExistException("ROOM NUMBER ALREADY BOOKED");
               }
           }catch (NoResultException e){
               bookingRepository.save(booking);
@@ -64,12 +67,13 @@ public class BookingService implements IBookingService<Booking> {
     @Override
     public void delete(Booking booking) throws Exception {
         try {
-            Booking find = bookingRepository.findById(booking.getId());
-            if (find == null) {
+            try {
+                Booking find = bookingRepository.findById(booking.getId());
+                bookingRepository.delete(find);
+            } catch (Exception e) {
                 throw new NotFoundException("BOOKING NOT FOUND");
-            } else {
-                bookingRepository.delete(booking);
             }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -78,13 +82,13 @@ public class BookingService implements IBookingService<Booking> {
     @Override
     public void update(Booking booking) throws Exception {
         try {
-            Booking find = bookingRepository.findById(booking.getId());
-
-            if (find == null) {
+            try {
+                Booking find = bookingRepository.findById(booking.getId());
+                bookingRepository.update(booking);
+            } catch (Exception e) {
                 throw new NotFoundException("BOOKING NOT FOUND");
-            } else {
-                bookingRepository.save(booking);
             }
+
         } catch (Exception e) {
             throw new Exception("ID NOT FOUND");
         }

@@ -31,7 +31,7 @@ public class KostRepository implements IRepositories<Kost> {
                 .setParameter("name", kost.getName())
                 .setParameter("address", kost.getAddress())
                 .setParameter("price", kost.getPrice())
-                .setParameter("capacity", kost.getCapasity())
+                .setParameter("capacity", kost.getCapacity())
                 .executeUpdate();
     }
 
@@ -48,7 +48,7 @@ public class KostRepository implements IRepositories<Kost> {
                 .setParameter("name", kost.getName())
                 .setParameter("address", kost.getAddress())
                 .setParameter("price", kost.getPrice())
-                .setParameter("available", kost.getCapasity())
+                .setParameter("available", kost.getCapacity())
                 .setParameter("id", kost.getId())
                 .executeUpdate();
     }
