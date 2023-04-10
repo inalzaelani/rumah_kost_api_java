@@ -25,11 +25,15 @@ public class Booking implements Serializable {
     @JsonBackReference
     private User user;
 
+    @Column(name = "room_number")
+    private String roomNumber;
+
     @Column(name = "start_date")
     private Date startDate;
 
     @Column(name = "end_date")
     private Date endDate;
+
 
     public Long getId() {
         return id;
@@ -69,5 +73,13 @@ public class Booking implements Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 }

@@ -27,11 +27,11 @@ public class KostRepository implements IRepositories<Kost> {
 
     @Override
     public void save(Kost kost) {
-         entityManager.createNativeQuery("INSERT INTO m_kost  (name, address, price, available) VALUES (:name, :address, :price, :available)")
+         entityManager.createNativeQuery("INSERT INTO m_kost  (name, address, price, capacity) VALUES (:name, :address, :price, :capacity)")
                 .setParameter("name", kost.getName())
                 .setParameter("address", kost.getAddress())
                 .setParameter("price", kost.getPrice())
-                .setParameter("available", kost.isAvailable())
+                .setParameter("capacity", kost.getCapasity())
                 .executeUpdate();
     }
 
@@ -44,11 +44,11 @@ public class KostRepository implements IRepositories<Kost> {
 
     @Override
     public void update(Kost kost) {
-        entityManager.createNativeQuery("UPDATE m_kost SET name = :name, address = :address, price = :price, available = :available WHERE id = :id")
+        entityManager.createNativeQuery("UPDATE m_kost SET name = :name, address = :address, price = :price, capacity = :capacity WHERE id = :id")
                 .setParameter("name", kost.getName())
                 .setParameter("address", kost.getAddress())
                 .setParameter("price", kost.getPrice())
-                .setParameter("available", kost.isAvailable())
+                .setParameter("available", kost.getCapasity())
                 .setParameter("id", kost.getId())
                 .executeUpdate();
     }

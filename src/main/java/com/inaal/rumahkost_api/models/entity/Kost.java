@@ -3,6 +3,7 @@ package com.inaal.rumahkost_api.models.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ public class Kost implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "name", nullable = false)
+    @NotBlank()
     private String name;
     @Column(name = "address")
     private String address;
@@ -22,8 +24,8 @@ public class Kost implements Serializable {
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "available")
-    private boolean available;
+    @Column(name = "capasity")
+    private Integer capasity;
 
     @OneToMany(mappedBy = "kost")
     @JsonManagedReference
@@ -61,12 +63,12 @@ public class Kost implements Serializable {
         this.price = price;
     }
 
-    public boolean isAvailable() {
-        return available;
+    public Integer getCapasity() {
+        return capasity;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public void setCapasity(Integer capasity) {
+        this.capasity = capasity;
     }
 
     public List<Booking> getBookings() {

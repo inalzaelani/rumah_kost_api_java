@@ -8,4 +8,6 @@ public interface IBookingRepository<T> {
     void save(T t);
     void delete(T t);
     void update(T t);
+    T findByRoomNumber(T t) throws Exception;
+//   T findKostCapacity(Long id) throws Exception;
 }

@@ -3,6 +3,7 @@ package com.inaal.rumahkost_api.services;
 import com.inaal.rumahkost_api.exception.NotFoundException;
 import com.inaal.rumahkost_api.models.entity.Booking;
 import com.inaal.rumahkost_api.repositories.IBookingRepository;
+import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,14 @@ public class BookingService implements IBookingService<Booking> {
     @Override
     public void save(Booking booking) {
         try{
-            bookingRepository.save(booking);
+          try {
+              Booking find = bookingRepository.findByRoomNumber(booking);
+              if (find != null){
+                  throw new NotFoundException("ROOM NUMBER ALREADY BOOKED");
+              }
+          }catch (NoResultException e){
+              bookingRepository.save(booking);
+          }
         } catch (Exception e){
             throw new RuntimeException(e);
         }

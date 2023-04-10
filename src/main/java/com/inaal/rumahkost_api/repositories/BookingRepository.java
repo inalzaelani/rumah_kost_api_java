@@ -24,9 +24,10 @@ public class BookingRepository implements IBookingRepository<Booking>{
 
     @Override
     public void save(Booking booking) {
-        entityManager.createNativeQuery("INSERT INTO t_booking (user_id, kost_id, start_date, end_date) VALUES (:user_id, :kost_id, :start_date, :end_date)")
+        entityManager.createNativeQuery("INSERT INTO t_booking (user_id, kost_id, room_number,start_date, end_date) VALUES (:user_id, :kost_id, :room_number ,:start_date, :end_date)")
                 .setParameter("user_id", booking.getUser().getId())
                 .setParameter("kost_id", booking.getKost().getId())
+                .setParameter("room_number", booking.getRoomNumber())
                 .setParameter("start_date", booking.getStartDate())
                 .setParameter("end_date", booking.getEndDate())
                 .executeUpdate();
@@ -42,13 +43,24 @@ public class BookingRepository implements IBookingRepository<Booking>{
 
     @Override
     public void update(Booking booking) {
-        entityManager.createNativeQuery("UPDATE t_booking SET user_id = :user_id, kost_id = :kost_id, start_date = :start_date, end_date = :end_date")
+        entityManager.createNativeQuery("UPDATE t_booking SET user_id = :user_id, kost_id = :kost_id, room_number = :room_number, start_date = :start_date, end_date = :end_date")
          .setParameter("user_id", booking.getUser().getId())
                 .setParameter("kost_id", booking.getKost().getId())
+                .setParameter("room_number", booking.getRoomNumber())
                 .setParameter("start_date", booking.getStartDate())
                 .setParameter("end_date", booking.getEndDate())
                 .executeUpdate();
     }
+
+    @Override
+    public Booking findByRoomNumber(Booking booking) throws Exception {
+        return (Booking)entityManager.createNativeQuery("SELECT * FROM t_booking  WHERE room_number = :room_number AND kost_id = :kost_id", Booking.class)
+                .setParameter("room_number", booking.getRoomNumber())
+                .setParameter("kost_id", booking.getKost().getId())
+                .getSingleResult();
+
+    }
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.inaal.rumahkost_api.controllers;
 
+import com.inaal.rumahkost_api.exception.AlreadyExistException;
 import com.inaal.rumahkost_api.exception.NotFoundException;
 import com.inaal.rumahkost_api.models.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,13 @@ public class ErrorController {
         return  ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse("X01", exception.getMessage()));
+    }
+
+    @ExceptionHandler(AlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> handleDataAlreadyExistException(AlreadyExistException exception) {
+        return  ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse("X03", exception.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
