@@ -10,9 +10,8 @@ import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.awt.print.Book;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -57,7 +56,6 @@ public class BookingService implements IBookingService<Booking> {
         try{
           try {
               Booking find = bookingRepository.findByRoomNumber(booking);
-              Booking check = bookingRepository.findKostCapacity(booking.getId());
               if (find != null){
                   throw new AlreadyExistException("ROOM NUMBER ALREADY BOOKED");
               }
@@ -85,7 +83,6 @@ public class BookingService implements IBookingService<Booking> {
             } catch (Exception e) {
                 throw new NotFoundException("BOOKING NOT FOUND");
             }
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -106,5 +103,17 @@ public class BookingService implements IBookingService<Booking> {
         }
     }
 
-
+    @Override
+    public List<Booking> monthReport(Integer year, Integer month) throws Exception {
+        try{
+            try {
+                List<Booking> monthlyReports= bookingRepository.reportMonthly(year, month);
+                return monthlyReports;
+            }catch (NoResultException e){
+                throw new NotFoundException("Report Not Found");
+            }
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 }
