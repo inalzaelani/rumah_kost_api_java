@@ -3,7 +3,9 @@ package com.inaal.rumahkost_api.services;
 import com.inaal.rumahkost_api.exception.AlreadyExistException;
 import com.inaal.rumahkost_api.exception.NotFoundException;
 import com.inaal.rumahkost_api.models.entity.Booking;
+import com.inaal.rumahkost_api.models.entity.Kost;
 import com.inaal.rumahkost_api.repositories.IBookingRepository;
+import com.inaal.rumahkost_api.repositories.IRepositories;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,12 @@ import java.util.List;
 public class BookingService implements IBookingService<Booking> {
 
     private IBookingRepository<Booking> bookingRepository;
+    private IRepositories<Kost> kostRepository;
 
     @Autowired
-    public BookingService(IBookingRepository<Booking> bookingRepository) {
+    public BookingService(IBookingRepository<Booking> bookingRepository, IRepositories<Kost> kostRepository) {
         this.bookingRepository = bookingRepository;
+        this.kostRepository = kostRepository;
     }
 
     @Override
@@ -53,11 +57,19 @@ public class BookingService implements IBookingService<Booking> {
         try{
           try {
               Booking find = bookingRepository.findByRoomNumber(booking);
+              Booking check = bookingRepository.findKostCapacity(booking.getId());
               if (find != null){
                   throw new AlreadyExistException("ROOM NUMBER ALREADY BOOKED");
               }
           }catch (NoResultException e){
-              bookingRepository.save(booking);
+              Kost kost = kostRepository.findById(booking.getKost().getId());
+              Integer capacity= kost.getCapacity() - 1;
+              if (capacity < 0){
+                  throw new IndexOutOfBoundsException("KOST FULL");
+              }else {
+                  kost.setCapacity(capacity);
+                  bookingRepository.save(booking);
+              }
           }
         } catch (Exception e){
             throw new RuntimeException(e);

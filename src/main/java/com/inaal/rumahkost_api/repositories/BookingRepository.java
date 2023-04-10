@@ -58,7 +58,6 @@ public class BookingRepository implements IBookingRepository<Booking>{
                 .setParameter("room_number", booking.getRoomNumber())
                 .setParameter("kost_id", booking.getKost().getId())
                 .getSingleResult();
-
     }
 
 
