@@ -1,8 +1,10 @@
 package com.inaal.rumahkost_api.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,8 +14,10 @@ import java.util.List;
 @Table(name = "v_report")
 public class Report implements Serializable {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kost_id")
     @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})

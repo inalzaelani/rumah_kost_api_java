@@ -1,7 +1,5 @@
 package com.inaal.rumahkost_api.repositories;
 
-import com.inaal.rumahkost_api.models.dto.ReportDTO;
-import com.inaal.rumahkost_api.models.entity.Booking;
 import com.inaal.rumahkost_api.models.entity.Report;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -9,7 +7,6 @@ import jakarta.persistence.Query;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -19,6 +16,7 @@ public class ReportRepository {
     private EntityManager entityManager;
     public List<Report> reportMonthly(Integer year, Integer month) {
         String sql = "SELECT \n" +
+                "ROW_NUMBER() OVER() as id, \n" +
                 "    m_kost.id AS kost_id, \n" +
                 "    m_kost.name AS kost_name, \n" +
                 "    EXTRACT(MONTH FROM t_booking.start_date) AS month,\n" +
