@@ -30,6 +30,9 @@ public class Kost implements Serializable {
     @JsonManagedReference
     private List<Booking> bookings;
 
+    @OneToMany(mappedBy = "kost")
+    private List<Report> reports;
+
     public Long getId() {
         return id;
     }
@@ -78,10 +81,19 @@ public class Kost implements Serializable {
         this.bookings = bookings;
     }
 
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
+
     @PreRemove
     private void removeKostFromBookings() {
         for (Booking booking : bookings) {
             booking.setKost(null);
         }
     }
+
 }

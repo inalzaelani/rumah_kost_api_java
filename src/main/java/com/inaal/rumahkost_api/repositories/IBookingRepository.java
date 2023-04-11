@@ -11,5 +11,4 @@ public interface IBookingRepository<T> {
     void delete(T t);
     void update(T t);
     T findByRoomNumber(T t) throws Exception;
-    List<Booking> reportMonthly(Integer year, Integer month);
 }

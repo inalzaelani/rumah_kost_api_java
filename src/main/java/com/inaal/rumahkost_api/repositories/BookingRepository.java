@@ -60,36 +60,4 @@ public class BookingRepository implements IBookingRepository<Booking>{
                 .setParameter("kost_id", booking.getKost().getId())
                 .getSingleResult();
     }
-
-
-    public List<Booking> reportMonthly(Integer year, Integer month) {
-        String sql = "SELECT \n" +
-                "    m_kost.id AS kost_id, \n" +
-                "    m_kost.name AS kost_name, \n" +
-                "    EXTRACT(MONTH FROM t_booking.start_date) AS month,\n" +
-                "    EXTRACT(YEAR FROM t_booking.start_date) AS year,\n" +
-                "    COUNT(t_booking.id) AS jumlah_booking,\n" +
-                "    m_kost.price * COUNT(t_booking.id) AS total\n" +
-                "FROM \n" +
-                "    m_kost \n" +
-                "    JOIN t_booking ON m_kost.id = t_booking.kost_id \n" +
-                "    JOIN m_user ON t_booking.user_id = m_user.id\n" +
-                "WHERE \n" +
-                "    EXTRACT(YEAR FROM t_booking.start_date) = :year AND \n" +
-                "    EXTRACT(MONTH FROM t_booking.start_date) = :month \n" +
-                "GROUP BY \n" +
-                "    m_kost.id, \n" +
-                "    m_kost.name, \n" +
-                "    EXTRACT(MONTH FROM t_booking.start_date),\n" +
-                "\tEXTRACT(YEAR FROM t_booking.start_date)\n" +
-                "ORDER BY \n" +
-                "    m_kost.name ASC";
-
-        List<Booking> monthlyReports = entityManager.createNativeQuery(sql, Report.class)
-                .setParameter("year", year)
-                .setParameter("month", month)
-                .getResultList();
-
-        return monthlyReports;
-    }
 }

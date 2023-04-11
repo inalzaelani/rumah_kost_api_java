@@ -61,10 +61,5 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse("Success Deleted", null));
     }
 
-    @GetMapping("/monthly-report/{year}/{month}")
-    public ResponseEntity getMonthlyReport(@PathVariable Integer year, @PathVariable Integer month) throws Exception {
-        List<Booking> monthlyReports = bookingService.monthReport(year, month);
-        return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse("Success", monthlyReports));
-    }
 }
 

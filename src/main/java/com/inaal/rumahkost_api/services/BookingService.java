@@ -103,17 +103,4 @@ public class BookingService implements IBookingService<Booking> {
         }
     }
 
-    @Override
-    public List<Booking> monthReport(Integer year, Integer month) throws Exception {
-        try{
-            try {
-                List<Booking> monthlyReports= bookingRepository.reportMonthly(year, month);
-                return monthlyReports;
-            }catch (NoResultException e){
-                throw new NotFoundException("Report Not Found");
-            }
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
 }

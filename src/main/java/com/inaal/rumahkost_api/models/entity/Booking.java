@@ -82,4 +82,5 @@ public class Booking implements Serializable {
     public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
     }
+
 }

@@ -1,42 +1,28 @@
-package com.inaal.rumahkost_api.models.entity;
+package com.inaal.rumahkost_api.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-
-import java.io.Serializable;
-import java.util.List;
-
-
-@Entity
-@Table(name = "v_report")
-public class Report implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "kost_id")
-    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
-    @JsonBackReference
-    private Kost kost;
-    @Column(name = "kost_name")
+public class ReportDTO {
+    private Long kostId;
     private String kostName;
-    @Column(name = "month")
     private Integer month;
-    @Column(name = "year")
     private Integer year;
-    @Column(name = "jumlah_booking")
     private Integer jumlahBooking;
-    @Column(name = "total")
     private Double total;
 
-
-    public Kost getKost() {
-        return kost;
+    public ReportDTO(Long kostId, String kostName, Integer month, Integer year, Integer jumlahBooking, Double total) {
+        this.kostId = kostId;
+        this.kostName = kostName;
+        this.month = month;
+        this.year = year;
+        this.jumlahBooking = jumlahBooking;
+        this.total = total;
     }
 
-    public void setKost(Kost kost) {
-        this.kost = kost;
+    public Long getKostId() {
+        return kostId;
+    }
+
+    public void setKostId(Long kostId) {
+        this.kostId = kostId;
     }
 
     public String getKostName() {
