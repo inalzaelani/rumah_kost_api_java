@@ -31,4 +31,29 @@ public class ReportService {
             throw new RuntimeException(e);
         }
     }
+
+   public void deleteReport(Integer year, Integer month) throws Exception {
+        try{
+            try {
+                reportRepository.deleteMonthlyReports(year, month);
+            }catch (NoResultException e){
+                throw new NotFoundException("Report Not Found");
+            }
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Report findReportById(Long id) throws Exception {
+        try{
+            try {
+                Report report = reportRepository.findReportById(id);
+                return report;
+            }catch (NoResultException e){
+                throw new NotFoundException("Report Not Found");
+            }
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 }

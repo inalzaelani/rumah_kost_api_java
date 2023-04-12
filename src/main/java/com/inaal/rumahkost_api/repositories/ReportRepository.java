@@ -64,4 +64,19 @@ public class ReportRepository {
             query.executeUpdate();
         }
     }
+
+    public void deleteMonthlyReports(Integer year, Integer month) {
+        String sql = "DELETE FROM v_report WHERE year = :year AND month = :month";
+        Query query = entityManager.createNativeQuery(sql);
+        query.setParameter("year", year);
+        query.setParameter("month", month);
+        query.executeUpdate();
+    }
+
+    public Report findReportById(Long id) {
+        String sql = "SELECT * FROM v_report WHERE id = :id";
+        Query query = entityManager.createNativeQuery(sql, Report.class);
+        query.setParameter("id", id);
+        return (Report) query.getSingleResult();
+    }
 }
